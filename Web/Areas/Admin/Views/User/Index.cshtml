@@ -1,0 +1,144 @@
+﻿@model PagedList.IPagedList<Model.User>
+
+@{
+  ViewBag.Title = "Quản trị tài khoản người dùng";
+  Layout = "/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section ChildCSS
+{
+  <!-- Table datatable css -->
+  <link href="/assets/admin/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/admin/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/admin/libs/datatables/fixedHeader.bootstrap4.min.html" rel="stylesheet" type="text/css" />
+  <link href="/assets/admin/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/admin/libs/datatables/scroller.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+  <!-- App css -->
+  <link href="/assets/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
+  <link href="/assets/admin/css/icons.min.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/admin/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+}
+
+<!-- start page title -->
+<div class="row">
+  <div class="col-12">
+    <div class="page-title-box">
+      <h4 class="page-title">Datatable</h4>
+      <div class="page-title-right">
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="#">Moltran</a></li>
+          <li class="breadcrumb-item"><a href="#">table</a></li>
+          <li class="breadcrumb-item active">Datatable</li>
+        </ol>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <table>
+          <tr>
+            <td>
+              <h3 class="card-title">Danh sách tài khoản</h3>
+            </td>
+            <td style="text-align:right">
+              <button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#con-close-modal">Thêm mới người dùng</button>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-12">
+            <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>UserName</th>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              @foreach (var item in Model)
+              {
+                <tr id="row_@item.ID">
+                  <td>@item.ID</td>
+                  <td>@item.UserName</td>
+                  <td>@item.Name</td>
+                  <td>@item.Address</td>
+                  <td>@item.Email</td>
+                  <td>
+                    <a href="#"
+                       class="badge bg-info">
+                      @Html.Raw(@item.Status ?
+                        "<strong>Kích hoạt</strong>" :
+                        "<font style='color:red;'>Khóa</font>"
+                        )
+                    </a>
+                  </td>
+                  <td style="text-align:center;width:15px;vertical-align:middle;">
+                    @Ajax.ActionLink("Xóa tài khoản", "Delete", new { @id = item.ID }, new AjaxOptions
+                      {
+                        Confirm = "Bạn có muốn xóa tài khoản này không ?",
+                        OnComplete = "$('#row_" + item.ID + "').remove()",
+                        HttpMethod = "Delete"
+                      }, new
+                      {
+                          @class = "badge badge-danger"
+                      })
+                  </td>
+                </tr>
+              }
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- End Row -->
+
+@section ChildJS
+{
+  <!-- Vendor js -->
+  <script src="/assets/admin/js/vendor.min.js"></script>
+
+  <!-- third party js -->
+  <script src="/assets/admin/libs/datatables/jquery.dataTables.min.js"></script>
+  <script src="/assets/admin/libs/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <script src="/assets/admin/libs/datatables/dataTables.responsive.min.js"></script>
+  <script src="/assets/admin/libs/datatables/responsive.bootstrap4.min.js"></script>
+
+  <script src="/assets/admin/libs/datatables/dataTables.buttons.min.js"></script>
+  <script src="/assets/admin/libs/datatables/buttons.bootstrap4.min.js"></script>
+
+  <script src="/assets/admin/libs/jszip/jszip.min.js"></script>
+  <script src="/assets/admin/libs/pdfmake/pdfmake.min.js"></script>
+  <script src="/assets/admin/libs/pdfmake/vfs_fonts.js"></script>
+
+  <script src="/assets/admin/libs/datatables/buttons.html5.min.js"></script>
+  <script src="/assets/admin/libs/datatables/buttons.print.min.js"></script>
+
+  <script src="/assets/admin/libs/datatables/dataTables.fixedHeader.min.html"></script>
+  <script src="/assets/admin/libs/datatables/dataTables.keyTable.min.js"></script>
+  <script src="/assets/admin/libs/datatables/dataTables.scroller.min.js"></script>
+
+  <!-- Datatables init -->
+  <script src="/assets/admin/js/pages/datatables.init.js"></script>
+
+  <!-- App js -->
+  <script src="/assets/admin/js/app.min.js"></script>
+}
